@@ -50,7 +50,7 @@ while run:
         current_ts = some['ts']
         server = some['server']
         key = some['key']
-        change_server = func.count_new_time(change_server, 50)
+        change_server = func.count_new_time(change_server, 30)
 
     # chek if it is time to analyse again
     if have_a_task and datetime.datetime.now() >= next_time:
