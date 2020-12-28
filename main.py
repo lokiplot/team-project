@@ -42,14 +42,36 @@ class Group:
             return one_more_number_of_members, online
 
 
+our_group_id = "memkn_funclub"
 token = "65e6efa565e6efa565e6efa54f6593fb1f665e665e6efa53a5c6937a4636b3416a8bd92"
 group_token = "17e681fbe171945431a04f1abc752d41ff888698288abf74124de4e782c67f36e76484601991870f56b7a"
 analyse_group_id = 'memkn'
 session1 = vk.AuthSession(access_token=token)
 vk_api = vk.API(session1, v=5.92)
-
+album_id = "278041850"
 month_length = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
+
+def upload_picture(picture_path):
+    r = requests.get('https://api.vk.com/method/photos.getUploadServer',
+                     params={
+                         'access_token': token,
+                         'album_id': album_id,
+                         'group_id': our_group_id,
+                     }).json()
+    url = r['response']['upload_url']
+    file = {'file1': open(picture_path, 'rb')}
+    ur = requests.post(url, files=file).json()
+    result = requests.get('https://api.vk.com/method/photos.save',
+                          params={
+                              'access_token': token,
+                              'album_id': ur['aid'],
+                              'group_id': ur['gid'],
+                              'server': ur['server'],
+                              'photos_list': ur['photos_list'],
+                              'hash': ur['hash']
+                          }).json()
+    print(result)
 
 def get_user_last_seen(profile_id):
     """
