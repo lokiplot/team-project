@@ -446,6 +446,62 @@ def dict_with_strings_to_dict_for_plots(dict_with_strings):
     return new_dict
 
 
+def create_weekday_image(dict_with_data, label_of_image):
+    """
+    creating an image
+    :param dict_with_data:
+    :param label_of_image:
+    :return nothing:
+    """
+    if len(dict_with_data) > 7:
+        return
+    day_of_week = [0, 1, 2, 3, 4, 5, 6]
+    online_on_this_weekday = [0, 0, 0, 0, 0, 0, 0]
+    for date in dict_with_data:
+        online_on_this_weekday[date.weekday()] = dict_with_data[date]
+    labels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    pltt.rcParams['figure.figsize'] = 7, 5
+    pltt.bar(day_of_week, online_on_this_weekday, align='center')
+    pltt.xticks(day_of_week, labels)
+    pltt.savefig("../data/image/" + label_of_image + '.png')
+    pltt.close()
+    return
+
+
+def create_daily_image(dict_with_data, label_of_image):
+    """
+    an image for daily report
+    :param dict_with_data:
+    :param label_of_image:
+    :return nothing:
+    """
+    day_delta = 0
+    prev_key = datetime.datetime.now()
+    for key in dict_with_data:
+        day_delta = key - prev_key
+        prev_key = key
+    period = day_delta.total_seconds()
+    period = period // 60
+    number_of_dots = int(1440 // period)
+    y_axis = [0] * int(number_of_dots)
+    x_axis = [datetime.datetime(2020, 1, 1, 0, 0, 0) + day_delta * i for i in range(number_of_dots)]
+    for key in dict_with_data:
+        y_axis[int((key.minute + key.hour * 60) // period)] = dict_with_data[key]
+    # belong is decoration for graph
+    figure, ax = plt.subplots(figsize=(number_of_dots, 10))
+    ax.set_title(label_of_image)
+    ax.set_xlabel("Время", fontsize=14)
+    ax.set_ylabel("Процент онлайна", fontsize=14)
+    ax.grid(which="major", linewidth=1.2)
+    ax.grid(which="minor", linestyle="--", color="gray", linewidth=0.5)
+    ax.scatter(x_axis, y_axis, c="red")
+    ax.plot(x_axis, y_axis)
+    my_fmt = mdates.DateFormatter('%H:%M')
+    ax.xaxis.set_major_formatter(my_fmt)
+    figure.savefig("../data/images/" + label_of_image + ".png")
+    return
+
+
 
 def task_by_button(current_user_id):
     r_id = get_new_random_id()
