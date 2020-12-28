@@ -8,6 +8,13 @@ import group_class as gc
 import time
 import random
 import math
+import matplotlib.pyplot as plt
+from matplotlib.ticker import AutoMinorLocator
+import pylab as pltt
+import datetime
+import matplotlib.dates as mdates
+
+
 
 
 token = "65e6efa565e6efa565e6efa54f6593fb1f665e665e6efa53a5c6937a4636b3416a8bd92"
@@ -395,6 +402,72 @@ def not_available(current_user_id):
     return
 
 
+# dicts belong -- samples of dicts for functions
+
+dict_with_data = {datetime.datetime(2020, 12, 7, 1): 90,
+                  datetime.datetime(2020, 12, 7, 2): 14,
+                  datetime.datetime(2020, 12, 7, 3): 15,
+                  datetime.datetime(2020, 12, 7, 4): 12,
+                  datetime.datetime(2020, 12, 7, 5): 35,
+                  datetime.datetime(2020, 12, 7, 6): 31,
+                  datetime.datetime(2020, 12, 7, 7): 2}
+
+label_of_image = "zsd"
+
+sample_data = {datetime.datetime(2020, 12, 7): 90,
+               datetime.datetime(2020, 12, 8): 14,
+               datetime.datetime(2020, 12, 9): 15,
+               datetime.datetime(2020, 12, 10): 12,
+               datetime.datetime(2020, 12, 11): 35,
+               datetime.datetime(2020, 12, 12): 31,
+               datetime.datetime(2020, 12, 13): 2}
+
+
+def time_from_db_to_date(time_string):
+    """
+    time in table is string, so this formatting it to a timedate. example:
+    time_string = "Mon, 10:30"
+                   0123456789
+    :param time_string:
+    :return timedate:
+    """
+
+    moment_hours = int(time_string[5])*10 + int(time_string[6])
+    moment_minutes = int(time_string[8])*10 + int(time_string[9])
+    moment_days = 7
+    if time_string[:3] == "Mon":
+        moment_days = 1
+    if time_string[:3] == "Tue":
+        moment_days = 2
+    if time_string[:3] == "Wed":
+        moment_days = 3
+    if time_string[:3] == "Thu":
+        moment_days = 4
+    if time_string[:3] == "Fri":
+        moment_days = 5
+    if time_string[:3] == "Sat":
+        moment_days = 6
+    auxiliary_delta = datetime.timedelta(days=moment_days, hours=moment_hours, minutes=moment_minutes)
+    # time from the beginning of the week
+    abstract_sunday = datetime.datetime(2020, 12, 27)
+    final_time = abstract_sunday + auxiliary_delta
+    return final_time
+
+
+def dict_with_strings_to_dict_for_plots(dict_with_strings):
+    """
+    converting result of request to db to dict for plot funstions
+    :param dict_with_strings:
+    :return:
+    """
+    new_dict = {}
+    for key in dict_with_strings:
+        key_for_new_dict = time_from_db_to_date(key)
+        new_dict[key_for_new_dict] = dict_with_strings[key]
+    return new_dict
+
+
+
 def task_by_button(current_user_id):
     r_id = get_new_random_id()
     vk_api2.messages.send(
@@ -402,3 +475,4 @@ def task_by_button(current_user_id):
         message="Send the group_id and the period with a whitespace between them and '$' in the beginning",
         random_id=r_id
     )
+    
