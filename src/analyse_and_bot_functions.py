@@ -402,27 +402,6 @@ def not_available(current_user_id):
     return
 
 
-# dicts belong -- samples of dicts for functions
-
-dict_with_data = {datetime.datetime(2020, 12, 7, 1): 90,
-                  datetime.datetime(2020, 12, 7, 2): 14,
-                  datetime.datetime(2020, 12, 7, 3): 15,
-                  datetime.datetime(2020, 12, 7, 4): 12,
-                  datetime.datetime(2020, 12, 7, 5): 35,
-                  datetime.datetime(2020, 12, 7, 6): 31,
-                  datetime.datetime(2020, 12, 7, 7): 2}
-
-label_of_image = "zsd"
-
-sample_data = {datetime.datetime(2020, 12, 7): 90,
-               datetime.datetime(2020, 12, 8): 14,
-               datetime.datetime(2020, 12, 9): 15,
-               datetime.datetime(2020, 12, 10): 12,
-               datetime.datetime(2020, 12, 11): 35,
-               datetime.datetime(2020, 12, 12): 31,
-               datetime.datetime(2020, 12, 13): 2}
-
-
 def time_from_db_to_date(time_string):
     """
     time in table is string, so this formatting it to a timedate. example:
